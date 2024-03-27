@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const { fetchUsers, createFavorite, destroyFavorite } = require('../../db');
+const { fetchUsers, createUser, createFavorite, destroyFavorite } = require('../../db');
 
 router.get('/', async (req, res, next) => {
     try {
@@ -9,6 +9,17 @@ router.get('/', async (req, res, next) => {
         next(error)
     };
 });
+
+router.post('/', async (req, res, next) => {
+    try{
+        const { username, password } = req.body;
+        const user = await createUser({ username: username, password: password });
+        res.status(200).send(user);
+
+    } catch(error) {
+        next(error)
+    }
+})
 
 router.post('/:user_id/product', async (req, res, next) => {
     try {

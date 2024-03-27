@@ -57,15 +57,16 @@ const fetchProducts = async () => {
     return response.rows;
 };
 
-const createFavorite = async () => {
+const createFavorite = async ({ user_id, product_id }) => {
     const SQL = /*SQL*/`INSERT INTO favorite(id, user_id, product_id) VALUES($1, $2, $3) RETURNING *`
     const response = await client.query(SQL, [uuid.v4(), user_id, product_id]);
     return response.rows[0];
 };
 
-const fetchFavorites = async () => {
-    const SQL = /*SQL*/`SELECT * FROM favorite WHERE user_id='${user_id}'`
-    const response = await client.query(SQL);
+const fetchFavorites = async ( user_id ) => {
+    console.log(user_id);
+    const SQL = /*SQL*/`SELECT * FROM favorite WHERE user_id=$1`
+    const response = await client.query(SQL, [user_id]);
     return response.rows;
 };
 
