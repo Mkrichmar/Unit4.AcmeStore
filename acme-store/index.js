@@ -2,6 +2,7 @@ require('dotenv').config();
 const { client, createTables, seed } = require('./db');
 const morgan = require('morgan');
 const express = require('express');
+const apiRouter = require('./api');
 
 const app = express();
 app.use(express.json());
@@ -13,7 +14,9 @@ const init = async () => {
     await createTables();
     console.log('tables created');
     await seed();
-    app.listen(process.env.PORT, () => {console.log(`app listening on port ${process.env.PORT}`);})
+    app.use('/api', apiRouter)
+    app.listen(process.env.PORT, () => {console.log(`app listening on port ${process.env.PORT}`);});
 };
+
 
 init();
